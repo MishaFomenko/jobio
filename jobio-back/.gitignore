@@ -1,0 +1,5 @@
+.env
+my_tables.sql
+/node_modules
+package.json
+package-lock.json
