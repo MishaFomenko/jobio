@@ -9,18 +9,18 @@ import JobPostsList from './components/jobPostsList';
 const HomePage: React.FC = () => {
   return (
     <Tabs
-      defaultActiveKey="profile"
+      defaultActiveKey="orgs"
       id="justify-tab-example"
       className="mb-3"
       justify
     >
-      <Tab eventKey="home" title="Organizations">
+      <Tab eventKey="orgs" title="Organizations">
         <OrgsList />
       </Tab>
-      <Tab eventKey="profile" title="Looking for a job">
+      <Tab eventKey="seekers" title="Looking for a job">
         <SeekersList />
       </Tab>
-      <Tab eventKey="longer-tab" title="Job posts">
+      <Tab eventKey="posts" title="Job posts">
         <JobPostsList />
       </Tab>
     </Tabs>
