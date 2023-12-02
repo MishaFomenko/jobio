@@ -1,6 +1,6 @@
 
 const custom_queries = {
-    getOrgNames: 'SELECT title, unique_id FROM organization',
+    getOrgSearchInfo: 'SELECT title, unique_id, industry, location FROM organization',
     getSeekersNames: 'SELECT first_name, last_name, unique_id FROM job_seeker',
     getJobPostsNames: 'SELECT title, id FROM job_post',
     addNewUserToUniqueUserId: 'INSERT INTO unique_user_id (id, created_at, role) VALUES ($1, $2, $3)',

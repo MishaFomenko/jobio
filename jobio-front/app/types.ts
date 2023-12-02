@@ -32,9 +32,11 @@ export interface SeekersNames {
     last_name: string,
 }
 
-export interface OrgsNames {
+export interface OrgsSearchInfo {
     unique_id: string,
     title: string,
+    location: string,
+    industry: string,
 }
 
 export interface JobPostForOrg {

@@ -23,8 +23,8 @@ pool.query('SELECT NOW()', (err, res) => {
     }
 });
 
-app.get('/getOrgsNames', (req, res) => {
-    pool.query(custom_queries.getOrgNames)
+app.get('/getOrgsSearchInfo', (req, res) => {
+    pool.query(custom_queries.getOrgSearchInfo)
         .then(pooledData => { res.status(200).json(pooledData) })
 })
 
