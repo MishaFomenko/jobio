@@ -10,7 +10,7 @@ const UserAccountPage: React.FC = () => {
     const { user, userRole, setUserRole } = useUserContext() as UserContext;
 
     useEffect(() => {
-        const reqPath = 'getUserRole';
+        const reqPath = 'profileData/userRole';
         const queryString = `userID=${user?.uid}`;
         customGetter(reqPath, queryString).then((data) => setUserRole(data[0].role))
     }, [])

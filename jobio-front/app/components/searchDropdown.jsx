@@ -49,16 +49,17 @@ const CustomMenu = React.forwardRef(
     },
 );
 
-const SearchDropdown = ({ searchBy, data, filterSetter }) => {
+const SearchDropdown = ({ searchBy, data, filterSetter, filter }) => {
 
     const handleItemClick = (e) => {
         filterSetter(e.target.innerHTML)
+        console.log(e.target.innerHTML)
     }
 
     return (
-        <Dropdown>
+        <Dropdown className='m-4'>
             <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-                Filter by {searchBy}
+                Filter by {searchBy} {filter !== '' && ':' + filter}
             </Dropdown.Toggle>
 
             <Dropdown.Menu as={CustomMenu}>

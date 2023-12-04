@@ -17,20 +17,20 @@ const JobSeekerAccount: React.FC = () => {
     const { user } = useUserContext() as UserContext;
 
     useEffect(() => {
-        const reqPath = 'getSeekerData';
+        const reqPath = 'profileData/seeker';
         const queryString = `seekerID=${user?.uid}`;
         customGetter(reqPath, queryString).then((data) => setSeekerInfo(Object.values(data[0])));
     }, [])
 
     useEffect(() => {
-        const reqPath = 'getSeekerFollowing';
+        const reqPath = 'followers/seeker';
         const queryString = `seekerID=${user?.uid}`;
         customGetter(reqPath, queryString).then((data) => setSeekerFollowing(data));
     }, [])
 
     const handleEditing = () => {
-        const reqPath = 'updateSeekerInfo';
-        editing && customPoster(reqPath, seekerInfo);
+        const reqPath = 'profileData/updateSeekerInfo';
+        editing && customPoster(reqPath, seekerInfo.slice(0, -1));
         setEditing(!editing);
     }
 
@@ -41,8 +41,8 @@ const JobSeekerAccount: React.FC = () => {
     }
 
     return (
-        <>
-            <button className='flex border-2 p-2 m-2' onClick={handleEditing}>
+        <div className='m-4'>
+            <button className='flex m-2 p-2 border-2 border-orange-400 hover:bg-orange-400 px-2 my-3 rounded-xl transition duration-300' onClick={handleEditing}>
                 <p className='mx-2'>{editing ? 'Save' : 'Edit'}</p>
                 <Image alt='' src='/images/pencil.png' height={20} width={20} />
             </button>
@@ -51,11 +51,11 @@ const JobSeekerAccount: React.FC = () => {
                     seekerInfo.length !== 0 && fields.map((field, ind) =>
                         <Form.Group key={ind} as={Row} className="mb-3" controlId="seekerAccountInfo">
                             <Form.Label column sm="2">
-                                {field}
+                                <p className='text-2xl'>{field}</p>
                             </Form.Label>
-                            <Col sm="10">
+                            <Col>
                                 {!editing ?
-                                    <Form.Control plaintext readOnly placeholder='empty' defaultValue={seekerInfo[ind + 1]} />
+                                    <Form.Control size='lg' plaintext readOnly placeholder='empty' defaultValue={seekerInfo[ind + 1]} />
                                     :
                                     <Form.Control placeholder='empty' onChange={(event) => handleInputChange(ind, event)} />
                                 }
@@ -64,8 +64,8 @@ const JobSeekerAccount: React.FC = () => {
                     )
                 }
             </Form>
-            <p>Following: {seekerFollowing.length}</p>
-        </>
+            <p className='text-2xl'>Following: {seekerFollowing.length}</p>
+        </div>
     )
 }
 

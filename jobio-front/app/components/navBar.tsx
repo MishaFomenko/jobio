@@ -1,10 +1,8 @@
 'use client'
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { signOut } from "firebase/auth";
 import { useUserContext } from '../context/userContext';
@@ -54,19 +52,10 @@ const NavBar: React.FC = () => {
                                 </Offcanvas.Header>
                                 <Offcanvas.Body>
                                     <Nav className="justify-content-end flex-grow-1 pe-3">
-                                        <Link href="/">Home</Link>
-                                        <Button variant='info' onClick={handleSignOut}>SignOut</Button>
-                                        <Link href='/user-account'>Account</Link>
+                                        <Link className='p-2 mx-4' href="/">Home</Link>
+                                        <Link className='p-2 mx-4' href='/user-account'>Account</Link>
+                                        <Button className='mx-4' variant='info' onClick={handleSignOut}>SignOut</Button>
                                     </Nav>
-                                    {/* <Form className="d-flex">
-                                    <Form.Control
-                                        type="search"
-                                        placeholder="Search"
-                                        className="me-2"
-                                        aria-label="Search"
-                                    />
-                                    <Button variant="outline-success">Search</Button>
-                                </Form> */}
                                 </Offcanvas.Body>
                             </Navbar.Offcanvas>
                         }

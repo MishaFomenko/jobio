@@ -26,32 +26,36 @@ const OrgAccount: React.FC = () => {
 
 
     useEffect(() => {
-        const reqPath = 'getOrgData';
+        const reqPath = 'profileData/org';
         const queryString = `orgID=${user?.uid}`;
         customGetter(reqPath, queryString).then((data) => setOrgInfo(Object.values(data[0])));
     }, [])
 
     useEffect(() => {
-        const reqPath = 'getOrgFollowers';
+        const reqPath = 'followers/org';
         const queryString = `orgID=${user?.uid}`;
         customGetter(reqPath, queryString).then((data) => setOrgFollowers(data));
     }, [])
 
     useEffect(() => {
-        const reqPath = 'getJobPostsForOrg';
+        const reqPath = 'searchInfo/JobPostsForOrg';
         const queryString = `orgID=${user?.uid}`;
         customGetter(reqPath, queryString).then((data) => setJobPostsForOrg(data));
     }, [])
 
     const handleEditing = () => {
-        const reqPath = 'updateOrgInfo';
-        editing && customPoster(reqPath, orgInfo);
+        const reqPath = 'profileData/updateOrgInfo';
+        editing && customPoster(reqPath, orgInfo.slice(0, -1));
         setEditing(!editing);
     }
 
     const handleCreatingJobPost = () => {
-        const reqPath = 'createNewJobPost';
+        const reqPath = 'profileData/createNewJobPost';
         creatingJobPost && customPoster(reqPath, newJobPost);
+        setCreatingJobPost(!creatingJobPost);
+    }
+
+    const handleCancelCreating = () => {
         setCreatingJobPost(!creatingJobPost);
     }
 
@@ -72,8 +76,8 @@ const OrgAccount: React.FC = () => {
     }
 
     return (
-        <>
-            <button className='flex border-2 p-2 m-2' onClick={handleEditing}>
+        <div className='m-4'>
+            <button className='flex m-2 p-2 border-2 border-orange-400 hover:bg-orange-400 px-2 my-3 rounded-xl transition duration-300' onClick={handleEditing}>
                 <p className='mx-2'>{editing ? 'Save' : 'Edit'}</p>
                 <Image alt='' src='/images/pencil.png' height={20} width={20} />
             </button>
@@ -82,11 +86,11 @@ const OrgAccount: React.FC = () => {
                     orgInfo.length !== 0 && orgFields.map((field, ind) =>
                         <Form.Group key={ind} as={Row} className="mb-3" controlId="orgAccountInfo">
                             <Form.Label column sm="2">
-                                {field}
+                                <p className='text-2xl m-2'>{field}</p>
                             </Form.Label>
                             <Col sm="10">
                                 {!editing ?
-                                    <Form.Control plaintext readOnly placeholder='empty' defaultValue={orgInfo[ind + 1]} />
+                                    <Form.Control size='lg' plaintext readOnly placeholder='empty' defaultValue={orgInfo[ind + 1]} />
                                     :
                                     <Form.Control placeholder='empty' onChange={(event) => handleAccountInputChange(ind, event)} />
                                 }
@@ -95,39 +99,44 @@ const OrgAccount: React.FC = () => {
                     )
                 }
             </Form>
-            <p>Followers: {orgFollowers.length}</p>
-            <div>
-                <p>Job Posts:</p>
+            <p className='text-2xl m-2'>Followers: {orgFollowers.length}</p>
+            <div className='flex'>
+                <p className='text-2xl m-2 p-2'>Job Posts:</p>
                 {jobPostsForOrg.length !== 0 && jobPostsForOrg.map((jobPostForOrg) => (
-                    <button className='text-start ml-4 mr-4 my-2 border-2 p-2' id={jobPostForOrg.id} key={jobPostForOrg.id} onClick={(event) => handleJobPostClick(event)} >{jobPostForOrg.title}</button>
+                    <button className='flex mx-2 p-2 border-2 border-orange-400 hover:bg-orange-400 px-2 my-3 rounded-xl transition duration-300' id={jobPostForOrg.id} key={jobPostForOrg.id} onClick={(event) => handleJobPostClick(event)} >{jobPostForOrg.title}</button>
                 ))}
             </div>
-            <button className='flex border-2 p-2 m-2' onClick={handleCreatingJobPost}>
-                <p className='mx-2'>{creatingJobPost ? 'Save new job post' : 'Create new job post'}</p>
-                <Image alt='' src='/images/pencil.png' height={20} width={20} />
-            </button>
+
             {creatingJobPost
                 ?
-                <Form>
-                    {
-                        jobPostFields.map((field, ind) =>
-                            <Form.Group key={ind} as={Row} className="mb-3" controlId="orgAccountInfo">
-                                <Form.Label column sm="2">
-                                    {field}
-                                </Form.Label>
-                                <Col sm="10">
+                <div className='my-4 p-4 border-4 border-green'>
 
-                                    <Form.Control placeholder='empty' onChange={(event) => handleJobPostInputChange(ind, event)} />
+                    <Form>
+                        {
+                            jobPostFields.map((field, ind) =>
+                                <Form.Group key={ind} as={Row} className="mb-3" controlId="orgAccountInfo">
+                                    <Form.Label column sm="2">
+                                        <p className='text-2xl'>{field}</p>
+                                    </Form.Label>
+                                    <Col sm="10">
 
-                                </Col>
-                            </Form.Group>
-                        )
-                    }
-                </Form>
+                                        <Form.Control size='lg' placeholder='empty' onChange={(event) => handleJobPostInputChange(ind, event)} />
+
+                                    </Col>
+                                </Form.Group>
+                            )
+                        }
+                    </Form>
+                    <button className='flex m-2 p-2 border-2 border-red-400 hover:bg-red-400 px-2 my-3 rounded-xl transition duration-300' onClick={handleCancelCreating}>Cancel X</button>
+                </div>
                 :
                 <></>
             }
-        </>
+            <button className='flex m-2 p-2 border-2 border-green-400 hover:bg-green-400 px-2 my-3 rounded-xl transition duration-300' onClick={handleCreatingJobPost}>
+                <p className='mx-2'>{creatingJobPost ? 'Save new job post' : 'Create new job post'}</p>
+                <Image alt='' src='/images/pencil.png' height={20} width={20} />
+            </button>
+        </div>
     )
 }
 

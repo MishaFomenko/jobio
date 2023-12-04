@@ -1,11 +1,11 @@
 
 const custom_queries = {
     getOrgSearchInfo: 'SELECT title, unique_id, industry, location FROM organization',
-    getSeekersNames: 'SELECT first_name, last_name, unique_id FROM job_seeker',
-    getJobPostsNames: 'SELECT title, id FROM job_post',
-    addNewUserToUniqueUserId: 'INSERT INTO unique_user_id (id, created_at, role) VALUES ($1, $2, $3)',
-    addNewSeeker: 'INSERT INTO job_seeker (unique_id, first_name, last_name, skills, location, email, university, spec, degree, experience_company, experience_years, about) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)',
-    addNewOrg: 'INSERT INTO organization (unique_id, title, industry, website, email, staff, about, location) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+    getSeekerSearchInfo: 'SELECT first_name, last_name, unique_id, location, spec FROM job_seeker',
+    getJobPostSearchInfo: 'SELECT title, id FROM job_post',
+    addNewUserToUniqueUserId: 'INSERT INTO unique_user_id (id, role) VALUES ($1, $2)',
+    addNewSeeker: 'INSERT INTO job_seeker (unique_id, first_name, last_name, skills, location, email, university, spec, degree, experience_company, experience_years, about, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)',
+    addNewOrg: 'INSERT INTO organization (unique_id, title, industry, website, email, staff, about, location, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
     getOrgData: 'SELECT * FROM organization WHERE unique_id = $1',
     getSeekerData: 'SELECT * FROM job_seeker WHERE unique_id = $1',
     getJobPostData: 'SELECT * FROM job_post WHERE id = $1',

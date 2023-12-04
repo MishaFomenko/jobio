@@ -7,6 +7,7 @@ import { signInWithEmailAndPassword, setPersistence, browserSessionPersistence }
 import { useUserContext } from '../context/userContext';
 import { useRouter } from 'next/navigation';
 import { UserContext } from '../types';
+import Link from 'next/link';
 
 const SignInPage: React.FC = () => {
 
@@ -34,7 +35,7 @@ const SignInPage: React.FC = () => {
     }
 
     return (
-        <div className='flex justify-center items-center h-screen'>
+        <div className='flex flex-col justify-center items-center h-screen'>
             <Form onSubmit={(event) => handleSignIn(event)}>
                 <p className='text-3xl mb-10'>SIGN IN</p>
                 <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
@@ -58,6 +59,7 @@ const SignInPage: React.FC = () => {
                     Submit
                 </Button>
             </Form>
+            <Link href='/signup'>Dont have an account? Sign Up!</Link>
         </div>
     );
 }

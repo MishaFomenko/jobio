@@ -30,6 +30,8 @@ export interface SeekersNames {
     unique_id: string,
     first_name: string,
     last_name: string,
+    location: string,
+    spec: string,
 }
 
 export interface OrgsSearchInfo {

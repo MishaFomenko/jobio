@@ -8,10 +8,12 @@ import { useUserContext } from '../context/userContext';
 import { customPoster } from '../utils/fetch-requests';
 import { UserContext } from '../types';
 import React from 'react';
+import { useRouter } from 'next/navigation';
 
 const SignUpPage: React.FC = () => {
 
-    const { setUser, auth } = useUserContext() as UserContext;
+    const { setUser, auth, setUserRole } = useUserContext() as UserContext;
+    const router = useRouter();
 
     const handleSignUp = (event: any) => {
         event.preventDefault();
@@ -23,10 +25,12 @@ const SignUpPage: React.FC = () => {
             .then(() => {
                 return createUserWithEmailAndPassword(auth, email, password);
             })
-            .then((userCredential) => {
+            .then(async (userCredential) => {
                 const newUser = userCredential.user;
                 setUser(newUser);
-                addUserToDb(newUser.uid, role);
+                await addUserToDb(newUser.uid, role);
+                setUserRole(role === 'Organization' ? 'org' : 'seeker')
+                router.push('/user-account');
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -35,7 +39,7 @@ const SignUpPage: React.FC = () => {
     }
 
     const addUserToDb = (uid: string, role: string) => {
-        const reqPath = 'newUserSignUp';
+        const reqPath = 'users/signUp';
         customPoster(reqPath, { uid, role });
     }
 
