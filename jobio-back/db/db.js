@@ -5,17 +5,17 @@
 //     user: 'uvrbaxglnemtdl',
 //     host: 'ec2-44-213-228-107.compute-1.amazonaws.com',
 //     database: 'd5qlerqgoilt8v',
-//     password: '57107fff514145ef583405e0fe1cf1c57d6bce6471635f12596dfab5e3d4a25f',
+//     password: ,
 //     port: '5432',
 // })
 
 const { Client } = require('pg');
 
 const pool = new Client({
-    connectionString: 'postgres://uvrbaxglnemtdl:57107fff514145ef583405e0fe1cf1c57d6bce6471635f12596dfab5e3d4a25f@ec2-44-213-228-107.compute-1.amazonaws.com:5432/d5qlerqgoilt8v',
+    connectionString: 'postgres://fbbsbmuesmeehe:2a9e6e7d0e1fda006d54c5f1710aad18fdc252179ca55454b93526cf166f3b2a@ec2-52-4-153-146.compute-1.amazonaws.com:5432/d3camim106q0du',
     ssl: {
         rejectUnauthorized: false
-    }
+    },
 });
 
 pool.connect();
@@ -32,5 +32,3 @@ pool.connect();
 module.exports = {
     pool,
 }
-
-

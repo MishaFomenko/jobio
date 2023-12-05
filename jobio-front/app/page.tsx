@@ -4,9 +4,18 @@ import Tabs from 'react-bootstrap/Tabs';
 import OrgsList from './components/orgsList';
 import SeekersList from './components/seekersList';
 import JobPostsList from './components/jobPostsList';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useUserContext } from './context/userContext';
+import { UserContext } from './types';
 
 
 const HomePage: React.FC = () => {
+  const { user } = useUserContext() as UserContext;
+  const router = useRouter();
+  useEffect(() => {
+    user === null && router.push('/signin');
+  })
   return (
     <Tabs
       defaultActiveKey="orgs"
