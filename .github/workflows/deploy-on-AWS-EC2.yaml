@@ -14,6 +14,7 @@ jobs:
           cd jobio-front &&
           sudo npm install &&
           cd .. &&
+          ls &&
           cd jobio-back &&
           sudo npm install &&
           cd ..
