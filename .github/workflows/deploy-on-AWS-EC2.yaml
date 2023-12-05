@@ -11,12 +11,12 @@ jobs:
       - name: install dependencies
         run: |
           ls
-      #     cd jobio-front &&
-      #     sudo npm install &&
-      #     cd .. &&
-      #     cd jobio-back &&
-      #     sudo npm install &&
-      #     cd ..
+          cd jobio-front &&
+          sudo npm install &&
+          cd .. &&
+          cd jobio-back &&
+          sudo npm install &&
+          cd ..
       # - name: installing and running docker
       #   run: |
       #     sudo npm install docker &&
