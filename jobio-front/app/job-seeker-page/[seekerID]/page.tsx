@@ -1,8 +1,16 @@
 'use client'
 import JobSeekerProfile from '../../components/seekerProfile';
-import { SeekerPageProps } from '../../types'
+import { SeekerPageProps, UserContext } from '../../types'
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useUserContext } from '../../context/userContext';
 
 const JobSeekerPage: React.FC<SeekerPageProps> = ({ params }) => {
+    const { user } = useUserContext() as UserContext;
+    const router = useRouter();
+    useEffect(() => {
+        user === null && router.push('/signin');
+    })
     return (
         <>
             <JobSeekerProfile seekerID={params.seekerID} />

@@ -5,8 +5,10 @@ import { useUserContext } from '../context/userContext';
 import React, { useEffect } from 'react';
 import { customGetter } from '../utils/fetch-requests';
 import { UserContext } from '../types';
+import { useRouter } from 'next/navigation';
 
 const UserAccountPage: React.FC = () => {
+    const router = useRouter();
     const { user, userRole, setUserRole } = useUserContext() as UserContext;
 
     useEffect(() => {
@@ -14,6 +16,10 @@ const UserAccountPage: React.FC = () => {
         const queryString = `userID=${user?.uid}`;
         customGetter(reqPath, queryString).then((data) => setUserRole(data[0].role))
     }, [])
+
+    useEffect(() => {
+        user === null && router.push('/signin');
+    })
 
     return (
         <>

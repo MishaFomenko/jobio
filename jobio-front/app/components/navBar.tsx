@@ -6,15 +6,12 @@ import Navbar from 'react-bootstrap/Navbar';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { signOut } from "firebase/auth";
 import { useUserContext } from '../context/userContext';
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { UserContext } from '../types';
 
 const NavBar: React.FC = () => {
 
     const { user, setUser, auth } = useUserContext() as UserContext;
-    const router = useRouter();
 
     const handleSignOut = () => {
         signOut(auth).then(() => {
@@ -24,10 +21,6 @@ const NavBar: React.FC = () => {
             // An error happened.
         });
     }
-
-    useEffect(() => {
-        user === null && router.push('/signin');
-    })
 
 
     return (
