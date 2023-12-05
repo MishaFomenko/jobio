@@ -40,6 +40,7 @@ const JobSeekerAccount: React.FC = () => {
         setSeekerInfo(newInfoArray);
     }
 
+
     return (
         <div className='m-4'>
             <button className='flex m-2 p-2 border-2 border-orange-400 hover:bg-orange-400 px-2 my-3 rounded-xl transition duration-300' onClick={handleEditing}>
