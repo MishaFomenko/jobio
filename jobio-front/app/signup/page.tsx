@@ -9,6 +9,7 @@ import { customPoster } from '../utils/fetch-requests';
 import { UserContext } from '../types';
 import React from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const SignUpPage: React.FC = () => {
 
@@ -46,7 +47,7 @@ const SignUpPage: React.FC = () => {
 
 
     return (
-        <div className='flex justify-center items-center h-screen'>
+        <div className='flex flex-col justify-center items-center h-screen'>
             <Form onSubmit={(event) => handleSignUp(event)}>
                 <p className='text-3xl mb-10'>SIGN UP</p>
 
@@ -81,6 +82,7 @@ const SignUpPage: React.FC = () => {
                     Submit
                 </Button>
             </Form>
+            <Link href='/signin'>Already have an account? Sign In!</Link>
         </div>
     );
 }
