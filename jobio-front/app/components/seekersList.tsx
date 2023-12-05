@@ -22,7 +22,7 @@ const SeekersList: React.FC = () => {
         customGetter(reqPath, queryString).then((data) => (setSeekersSearchInfo(data), setSeekerDisplay(data)));
     }, [])
 
-    const handleSeekerClick = (id) => {
+    const handleSeekerClick = (id: string) => {
         router.push(`/job-seeker-page/${id}`);
     }
 
