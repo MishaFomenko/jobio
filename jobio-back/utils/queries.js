@@ -18,6 +18,7 @@ const custom_queries = {
     updateSeekerInfo: 'UPDATE job_seeker SET first_name=$2, last_name=$3, skills=$4, location=$5, email=$6, university=$7, spec=$8, degree=$9, experience_company=$10, experience_years=$11, about=$12 WHERE unique_id=$1',
     createNewJobPost: 'INSERT INTO job_post (created_by, title, about, requirements, created_at) VALUES ($1,$2,$3,$4,$5)',
     addNewFollower: 'INSERT INTO sub (created_at, target, follower) VALUES ($1, $2, $3)',
+    getOrgName: 'SELECT title FROM organization WHERE unique_id = $1',
 }
 
 module.exports = {

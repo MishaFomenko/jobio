@@ -24,4 +24,10 @@ searchInfoRoutes.get('/JobPostsForOrg', async (req, res) => {
     res.status(200).json(orgJobPosts);
 })
 
+searchInfoRoutes.get('/creatorName', async (req, res) => {
+    const { orgID } = req.query;
+    const orgName = await pool.query(custom_queries.getOrgName, [orgID]);
+    res.status(200).json(orgName);
+})
+
 module.exports = searchInfoRoutes;

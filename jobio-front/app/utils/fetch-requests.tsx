@@ -1,4 +1,4 @@
-
+//18.218.30.148
 const customGetter = async (reqPath: string, queryString: string) => {
     return fetch(`http://18.218.30.148:3001/${reqPath}?${queryString}`, {
         method: 'GET',
