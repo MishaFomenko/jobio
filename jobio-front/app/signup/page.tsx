@@ -16,7 +16,7 @@ const SignUpPage: React.FC = () => {
     const { setUser, auth, setUserRole } = useUserContext() as UserContext;
     const router = useRouter();
 
-    const handleSignUp = (event: any) => {
+    const handleSignUp = (event: React.ChangeEvent<any>) => {
         event.preventDefault();
         const email = event.target.elements.formPlaintextEmail.value;
         const password = event.target.elements.formPlaintextPassword.value;
@@ -33,18 +33,16 @@ const SignUpPage: React.FC = () => {
                 setUserRole(role === 'Organization' ? 'org' : 'seeker')
                 router.push('/user-account');
             })
-            .catch((error) => {
-                const errorCode = error.code;
+            .catch((error: Error) => {
                 const errorMessage = error.message;
+                console.log('The sign-up failed with an error: ', errorMessage)
             });
     }
 
-    const addUserToDb = (uid: string, role: string) => {
+    const addUserToDb = (uid: string, role: string): void => {
         const reqPath = 'users/signUp';
         customPoster(reqPath, { uid, role });
     }
-
-
 
     return (
         <div className='flex flex-col justify-center items-center h-screen'>

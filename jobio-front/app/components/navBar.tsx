@@ -16,9 +16,8 @@ const NavBar: React.FC = () => {
     const handleSignOut = () => {
         signOut(auth).then(() => {
             setUser(null);
-            // Sign-out successful.
-        }).catch((error) => {
-            // An error happened.
+        }).catch((error: Error) => {
+            console.log('Sign-out failed with an error: ', error)
         });
     }
 

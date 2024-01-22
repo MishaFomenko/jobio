@@ -21,7 +21,7 @@ const auth = getAuth(app);
 const UserContext = createContext<UserContext | {}>({});
 
 export const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
-    let prevUser = null;
+    let prevUser: string | null = null;
     try {
         const storedUser = sessionStorage.getItem(`firebase:authUser:AIzaSyCmM9nSO3MDnqW8-H7ZLObUb9pJk4sbJ2c:[DEFAULT]`);
         if (typeof storedUser === 'string') {
@@ -31,8 +31,8 @@ export const UserContextProvider = ({ children }: { children: React.ReactNode })
         console.log('Unable to log sessionStorage on the server');
     };
 
-    const [user, setUser] = useState(prevUser);
-    const [userRole, setUserRole] = useState(null);
+    const [user, setUser] = useState<string | null>(prevUser);
+    const [userRole, setUserRole] = useState<'org' | 'seeker' | null>(null);
 
     return (
         <UserContext.Provider value={{ user, setUser, auth, userRole, setUserRole }}>

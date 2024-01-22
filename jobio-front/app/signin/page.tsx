@@ -14,7 +14,7 @@ const SignInPage: React.FC = () => {
     const { setUser, auth } = useUserContext() as UserContext;
     const router = useRouter();
 
-    const handleSignIn = (event: any) => {
+    const handleSignIn = (event: React.ChangeEvent<any>) => {
         event.preventDefault();
         const email = event.target.elements.formPlaintextEmail.value;
         const password = event.target.elements.formPlaintextPassword.value;
@@ -28,9 +28,9 @@ const SignInPage: React.FC = () => {
                 setUser(newUser);
                 router.push('/user-account');
             })
-            .catch((error) => {
-                const errorCode = error.code;
+            .catch((error: Error) => {
                 const errorMessage = error.message;
+                console.log('Sign-in failed with an error: ', errorMessage)
             });
     }
 

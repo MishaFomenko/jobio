@@ -15,9 +15,7 @@ const UserAccountPage: React.FC = () => {
         const reqPath = 'profileData/userRole';
         const queryString = `userID=${user?.uid}`;
         customGetter(reqPath, queryString).then((data) => setUserRole(data[0].role))
-    }, [])
 
-    useEffect(() => {
         user === null && router.push('/signin');
     })
 

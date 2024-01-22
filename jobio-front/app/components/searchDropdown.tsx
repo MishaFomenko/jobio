@@ -1,27 +1,29 @@
 import React, { useState } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
+import { CustomDropdownProps, CustomMenuProps, CustomToggleProps } from '../types'
 
-// The forwardRef is important!!
-// Dropdown needs access to the DOM node in order to position the Menu
-const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
-    <a
-        href=""
-        ref={ref}
-        onClick={(e) => {
-            e.preventDefault();
-            onClick(e);
-        }}
-    >
-        {children}
-        &#x25bc;
-    </a>
-));
+const CustomToggle: React.FC<CustomToggleProps> = React.forwardRef(
+    ({ children, onClick }, ref: React.ForwardedRef<HTMLAnchorElement>) => (
+        <a
+            href=""
+            ref={ref}
+            onClick={(e) => {
+                e.preventDefault();
+                onClick(e);
+            }}
+        >
+            {children}
+            &#x25bc;
+        </a>
+    )
+);
 
-// forwardRef again here!
-// Dropdown needs access to the DOM of the Menu to measure it
-const CustomMenu = React.forwardRef(
-    ({ children, style, className, 'aria-labelledby': labeledBy }, ref) => {
+const CustomMenu: React.FC<CustomMenuProps> = React.forwardRef(
+    (
+        { children, style, className, 'aria-labelledby': labeledBy },
+        ref: React.ForwardedRef<HTMLDivElement>
+    ) => {
         const [value, setValue] = useState('');
 
         return (
@@ -41,17 +43,19 @@ const CustomMenu = React.forwardRef(
                 <ul className="list-unstyled">
                     {React.Children.toArray(children).filter(
                         (child) =>
-                            !value || child.props.children.toLowerCase().startsWith(value),
+                            !value ||
+                            (typeof child === 'string' &&
+                                child.toLowerCase().startsWith(value))
                     )}
                 </ul>
             </div>
         );
-    },
+    }
 );
 
-const SearchDropdown = ({ searchBy, data, filterSetter, filter }) => {
+const SearchDropdown: React.FC<CustomDropdownProps> = ({ searchBy, data, filterSetter, filter }) => {
 
-    const handleItemClick = (e) => {
+    const handleItemClick = (e: React.ChangeEvent<any>) => {
         filterSetter(e.target.innerHTML)
         console.log(e.target.innerHTML)
     }

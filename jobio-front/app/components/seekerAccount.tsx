@@ -1,40 +1,38 @@
 'use client'
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useUserContext } from '../context/userContext';
 import Image from 'next/image';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { customGetter, customPoster } from '../utils/fetch-requests';
-import { UserContext } from '../types';
+import { UserContext, SeekersNames } from '../types';
 
 const JobSeekerAccount: React.FC = () => {
 
     const [seekerInfo, setSeekerInfo] = useState<(string | number)[]>([]);
-    const [seekerFollowing, setSeekerFollowing] = useState([]);
-    const [editing, setEditing] = useState(false);
+    const [seekerFollowing, setSeekerFollowing] = useState<SeekersNames[]>([]);
+    const [editing, setEditing] = useState<boolean>(false);
     const fields = ['First name', 'Last name', 'Skills', 'Location', 'Email', 'University', 'Specialization', 'Degree', 'Experience (company)', 'Experience (years)', 'About'];
     const { user } = useUserContext() as UserContext;
 
     useEffect(() => {
-        const reqPath = 'profileData/seeker';
-        const queryString = `seekerID=${user?.uid}`;
-        customGetter(reqPath, queryString).then((data) => setSeekerInfo(Object.values(data[0])));
+        const reqPathInfo = 'profileData/seeker';
+        const queryStringInfo = `seekerID=${user?.uid}`;
+        customGetter(reqPathInfo, queryStringInfo).then((data) => setSeekerInfo(Object.values(data[0])));
+
+        const reqPathFollowing = 'followers/seeker';
+        const queryStringFollowing = `seekerID=${user?.uid}`;
+        customGetter(reqPathFollowing, queryStringFollowing).then((data) => setSeekerFollowing(data));
     }, [])
 
-    useEffect(() => {
-        const reqPath = 'followers/seeker';
-        const queryString = `seekerID=${user?.uid}`;
-        customGetter(reqPath, queryString).then((data) => setSeekerFollowing(data));
-    }, [])
-
-    const handleEditing = () => {
+    const handleEditing = (): void => {
         const reqPath = 'profileData/updateSeekerInfo';
         editing && customPoster(reqPath, seekerInfo.slice(0, -1));
         setEditing(!editing);
     }
 
-    const handleInputChange = (ind: number, event: any) => {
+    const handleInputChange = (ind: number, event: React.ChangeEvent<any>): void => {
         const newInfoArray: Array<string | number> = seekerInfo;
         newInfoArray[ind + 1] = event.target.value;
         setSeekerInfo(newInfoArray);

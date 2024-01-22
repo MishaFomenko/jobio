@@ -7,17 +7,17 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { useRouter } from 'next/navigation';
 import { customGetter, customPoster } from '../utils/fetch-requests';
-import { UserContext, JobPostForOrg } from '../types';
+import { UserContext, JobPostForOrg, SeekersNames } from '../types';
 
 const OrgAccount: React.FC = () => {
 
     const { user } = useUserContext() as UserContext;
 
     const [orgInfo, setOrgInfo] = useState<(string | number)[]>([]);
-    const [orgFollowers, setOrgFollowers] = useState([]);
-    const [editing, setEditing] = useState(false);
-    const [creatingJobPost, setCreatingJobPost] = useState(false);
-    const [newJobPost, setNewJobPost] = useState([user?.uid]);
+    const [orgFollowers, setOrgFollowers] = useState<SeekersNames[]>([]);
+    const [editing, setEditing] = useState<boolean>(false);
+    const [creatingJobPost, setCreatingJobPost] = useState<boolean>(false);
+    const [newJobPost, setNewJobPost] = useState<(string | undefined)[]>([user?.uid]);
     const [jobPostsForOrg, setJobPostsForOrg] = useState<JobPostForOrg[]>([]);
 
     const orgFields = ['Title', 'Industry', 'Website', 'Email', 'Staff', 'About', 'Location'];
@@ -26,52 +26,48 @@ const OrgAccount: React.FC = () => {
 
 
     useEffect(() => {
-        const reqPath = 'profileData/org';
-        const queryString = `orgID=${user?.uid}`;
-        customGetter(reqPath, queryString).then((data) => setOrgInfo(Object.values(data[0])));
+        const reqPathInfo = 'profileData/org';
+        const queryStringInfo = `orgID=${user?.uid}`;
+        customGetter(reqPathInfo, queryStringInfo).then((data) => setOrgInfo(Object.values(data[0])));
+
+        const reqPathFollowers = 'followers/org';
+        const queryStringFollowers = `orgID=${user?.uid}`;
+        customGetter(reqPathFollowers, queryStringFollowers).then((data) => setOrgFollowers(data));
+
+        const reqPathForOrg = 'searchInfo/JobPostsForOrg';
+        const queryStringForOrg = `orgID=${user?.uid}`;
+        customGetter(reqPathForOrg, queryStringForOrg).then((data) => setJobPostsForOrg(data));
     }, [])
 
-    useEffect(() => {
-        const reqPath = 'followers/org';
-        const queryString = `orgID=${user?.uid}`;
-        customGetter(reqPath, queryString).then((data) => setOrgFollowers(data));
-    }, [])
-
-    useEffect(() => {
-        const reqPath = 'searchInfo/JobPostsForOrg';
-        const queryString = `orgID=${user?.uid}`;
-        customGetter(reqPath, queryString).then((data) => setJobPostsForOrg(data));
-    }, [])
-
-    const handleEditing = () => {
-        const reqPath = 'profileData/updateOrgInfo';
-        editing && customPoster(reqPath, orgInfo.slice(0, -1));
+    const handleEditing = (): void => {
+        const reqPathEditing = 'profileData/updateOrgInfo';
+        editing && customPoster(reqPathEditing, orgInfo.slice(0, -1));
         setEditing(!editing);
     }
 
-    const handleCreatingJobPost = () => {
-        const reqPath = 'profileData/createNewJobPost';
-        creatingJobPost && customPoster(reqPath, newJobPost);
+    const handleCreatingJobPost = (): void => {
+        const reqPathCreating = 'profileData/createNewJobPost';
+        creatingJobPost && customPoster(reqPathCreating, newJobPost);
         setCreatingJobPost(!creatingJobPost);
     }
 
-    const handleCancelCreating = () => {
+    const handleCancelCreating = (): void => {
         setCreatingJobPost(!creatingJobPost);
     }
 
-    const handleAccountInputChange = (ind: number, event: any) => {
+    const handleAccountInputChange = (ind: number, event: React.ChangeEvent<any>): void => {
         const newInfoArray: Array<string | number> = orgInfo;
         newInfoArray[ind + 1] = event.target.value;
         setOrgInfo(newInfoArray);
     }
 
-    const handleJobPostInputChange = (ind: number, event: any) => {
+    const handleJobPostInputChange = (ind: number, event: React.ChangeEvent<any>): void => {
         const newInfoArray = newJobPost;
         newInfoArray[ind + 1] = event.target.value;
         setNewJobPost(newInfoArray);
     }
 
-    const handleJobPostClick = (event: any) => {
+    const handleJobPostClick = (event: React.ChangeEvent<any>) => {
         router.push(`/job-post-page/${event.target.id}`);
     }
 

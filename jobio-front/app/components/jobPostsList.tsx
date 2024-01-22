@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import { customGetter } from '../utils/fetch-requests';
 import { JobPost } from '../types';
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 
 const JobPostsList: React.FC = () => {
 
@@ -18,12 +17,12 @@ const JobPostsList: React.FC = () => {
         customGetter(reqPath, queryString).then((data) => (setJobPosts(data), setJobPostDisplay(data)));
     }, [])
 
-    const handleJobPostClick = (id: string) => {
+    const handleJobPostClick = (id: string): void => {
         router.push(`/job-post-page/${id}`);
     }
 
-    const handleSearchChange = (event: any) => {
-        const newJobPostDisplay = jobPosts.filter(jobPost => jobPost.title.toLowerCase().includes(event.target.value.toLowerCase()));
+    const handleSearchChange = (event: React.ChangeEvent<any>): void => {
+        const newJobPostDisplay = jobPosts.filter(jobPost => jobPost.title.toLowerCase().includes(event.target.value?.toLowerCase()));
         setJobPostDisplay(newJobPostDisplay);
     }
 
@@ -40,11 +39,11 @@ const JobPostsList: React.FC = () => {
             </Form>
             <div className='flex flex-col justify-start'>
                 {jobPostDisplay.length !== 0 && jobPostDisplay.map((jobPost) => (
-                    <Button variant='info' className='text-start ml-4 mr-4 my-2 border-2 p-2' id={jobPost.id} key={jobPost.id} onClick={() => handleJobPostClick(jobPost.id)} >
+                    <button className='text-start ml-4 mr-4 my-2 p-2 border-2 border-grey-300 hover:bg-gray-300 px-2 rounded-xl transition duration-300 focus:bg-grey-600' id={jobPost.id} key={jobPost.id} onClick={() => handleJobPostClick(jobPost.id)} >
                         <div className='flex'>
-                            <p className='mx-4'>{jobPost.title}</p>
+                            <p className='mx-4'>Job Title: {jobPost.title}</p>
                         </div>
-                    </Button>
+                    </button>
                 ))}
             </div>
         </>

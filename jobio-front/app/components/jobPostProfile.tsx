@@ -3,22 +3,20 @@ import { useEffect, useState } from 'react';
 import { customGetter } from '../utils/fetch-requests';
 import { format } from 'date-fns';
 
-const JobPost = ({ jobPostID }: { jobPostID: string }) => {
+const JobPost: React.FC<{ jobPostID: string }> = ({ jobPostID }) => {
 
-    const [jobPostInfo, setJobPostInfo] = useState([]);
+    const [jobPostInfo, setJobPostInfo] = useState<string[]>([]);
     const [creator, setCreator] = useState<{ title: string }>({ title: '' });
     const fields = ['Created by', 'Title', 'About', 'Requirements', 'Created at'];
 
     useEffect(() => {
-        const reqPath = 'searchInfo/creatorName';
-        const queryString = `orgID=${jobPostInfo[0]}`;
-        jobPostInfo.length !== 0 && customGetter(reqPath, queryString).then((data) => setCreator(data[0]));
-    }, [jobPostInfo])
+        const reqPathJob = 'searchInfo/creatorName';
+        const queryStringJob = `orgID=${jobPostInfo[0]}`;
+        jobPostInfo.length !== 0 && customGetter(reqPathJob, queryStringJob).then((data) => setCreator(data[0]));
 
-    useEffect(() => {
-        const reqPath = 'profileData/jobPost';
-        const queryString = `jobPostID=${jobPostID}`;
-        customGetter(reqPath, queryString).then((data) => setJobPostInfo(Object.values(data[0])));
+        const reqPathCreator = 'profileData/jobPost';
+        const queryStringCreator = `jobPostID=${jobPostID}`;
+        customGetter(reqPathCreator, queryStringCreator).then((data) => setJobPostInfo(Object.values(data[0])));
     }, [])
 
     return (
