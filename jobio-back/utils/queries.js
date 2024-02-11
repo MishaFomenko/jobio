@@ -10,7 +10,7 @@ const custom_queries = {
     getSeekerData: 'SELECT * FROM job_seeker WHERE unique_id = $1',
     getJobPostData: 'SELECT * FROM job_post WHERE id = $1',
     getOrgFollowers: 'SELECT * FROM sub WHERE target = $1',
-    getSeekerFollowing: 'SELECT * FROM sub WHERE follower = $1',
+    getSeekerFollowing: 'SELECT unique_id, title FROM organization WHERE unique_id IN (SELECT target FROM sub WHERE follower = $1)',
     getJobPostsForOrg: 'SELECT title, id FROM job_post WHERE created_by = $1',
     getUserRole: 'SELECT role FROM unique_user_id WHERE id = $1',
     checkIfFollowing: 'SELECT id FROM sub WHERE follower = $1 AND target = $2',

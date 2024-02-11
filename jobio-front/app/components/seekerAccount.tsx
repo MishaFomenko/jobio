@@ -6,15 +6,18 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { customGetter, customPoster } from '../utils/fetch-requests';
-import { UserContext, SeekersNames } from '../types';
+import { UserContext, OrgsSearchInfo } from '../types';
+import { useRouter } from 'next/navigation';
 
 const JobSeekerAccount: React.FC = () => {
 
     const [seekerInfo, setSeekerInfo] = useState<(string | number)[]>([]);
-    const [seekerFollowing, setSeekerFollowing] = useState<SeekersNames[]>([]);
+    const [seekerFollowing, setSeekerFollowing] = useState<OrgsSearchInfo[]>([]);
     const [editing, setEditing] = useState<boolean>(false);
     const fields = ['First name', 'Last name', 'Skills', 'Location', 'Email', 'University', 'Specialization', 'Degree', 'Experience (company)', 'Experience (years)', 'About'];
     const { user } = useUserContext() as UserContext;
+
+    const router = useRouter();
 
     useEffect(() => {
         const reqPathInfo = 'profileData/seeker';
@@ -38,9 +41,12 @@ const JobSeekerAccount: React.FC = () => {
         setSeekerInfo(newInfoArray);
     }
 
+    const handleOrgClick = (id: string): void => {
+        router.push(`/organization-page/${id}`);
+    }
 
     return (
-        <div className='m-4'>
+        <div className='m-4 pb-4'>
             <button className='flex m-2 p-2 border-2 border-orange-400 hover:bg-orange-400 px-2 my-3 rounded-xl transition duration-300' onClick={handleEditing}>
                 <p className='mx-2'>{editing ? 'Save' : 'Edit'}</p>
                 <Image alt='' src='/images/pencil.png' height={20} width={20} />
@@ -64,6 +70,13 @@ const JobSeekerAccount: React.FC = () => {
                 }
             </Form>
             <p className='text-2xl'>Following: {seekerFollowing.length}</p>
+            {seekerFollowing.length !== 0 && seekerFollowing.map((org) => (
+                <button key={org.unique_id} onClick={() => handleOrgClick(org.unique_id)} className='text-start ml-4 mr-4 my-2 p-2 border-2 border-grey-300 hover:bg-gray-300 px-2 rounded-xl transition duration-300 focus:bg-grey-600' >
+                    <div className='flex'>
+                        <p className='mx-4 w-1/3'>Company: {org.title}</p>
+                    </div>
+                </button>
+            ))}
         </div>
     )
 }

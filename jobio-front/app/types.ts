@@ -32,6 +32,7 @@ export interface SeekersNames {
     last_name: string,
     location: string,
     spec: string,
+    target: string,
 }
 
 export interface OrgsSearchInfo {

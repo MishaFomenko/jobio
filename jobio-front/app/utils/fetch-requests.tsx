@@ -25,4 +25,8 @@ const customPoster = async (reqPath: string, body: object) => {
     })
 }
 
-export { customGetter, customPoster };
+const customFilterOnEvent = (toFilter: any, filterBy: any, event: any) => {
+    return toFilter.filter((element: any) => element[filterBy].toLowerCase().includes(event.target.value?.toLowerCase()))
+}
+
+export { customGetter, customPoster, customFilterOnEvent };

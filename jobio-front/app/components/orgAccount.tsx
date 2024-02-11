@@ -72,7 +72,7 @@ const OrgAccount: React.FC = () => {
     }
 
     return (
-        <div className='m-4'>
+        <div className='m-4 pb-4'>
             <button className='flex m-2 p-2 border-2 border-orange-400 hover:bg-orange-400 px-2 my-3 rounded-xl transition duration-300' onClick={handleEditing}>
                 <p className='mx-2'>{editing ? 'Save' : 'Edit'}</p>
                 <Image alt='' src='/images/pencil.png' height={20} width={20} />

@@ -50,10 +50,16 @@ const OrganizationProfile: React.FC<{ orgID: string }> = ({ orgID }) => {
     return (
         <div className='m-4'>
             {userRole === 'seeker'
-                &&
-                <button className='m-2 p-2 border-2 border-green-400 hover:bg-green-400 px-2 my-3 rounded-xl transition duration-300' onClick={handleNewSub}>
-                    <p className='mx-2'>Follow</p>
-                </button>
+                ?
+                !following
+                    ?
+                    <button className='m-2 p-2 border-2 border-green-400 hover:bg-green-400 px-2 my-3 rounded-xl transition duration-300' onClick={handleNewSub}>
+                        <p className='mx-2'>Follow</p>
+                    </button>
+                    :
+                    <p className='text-center m-2 p-2 border-2 border-green-400 px-2 my-3 rounded-xl w-1/4'>You are following this organization</p>
+                :
+                <></>
             }
             {Object.values(orgInfo).length !== 0 && fields.map((field, ind) => (
                 field === 'On the platform since' ?

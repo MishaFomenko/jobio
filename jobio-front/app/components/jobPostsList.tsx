@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { customGetter } from '../utils/fetch-requests';
+import { customGetter, customFilterOnEvent } from '../utils/fetch-requests';
 import { JobPost } from '../types';
 import Form from 'react-bootstrap/Form';
 
@@ -22,7 +22,8 @@ const JobPostsList: React.FC = () => {
     }
 
     const handleSearchChange = (event: React.ChangeEvent<any>): void => {
-        const newJobPostDisplay = jobPosts.filter(jobPost => jobPost.title.toLowerCase().includes(event.target.value?.toLowerCase()));
+        // const newJobPostDisplay = jobPosts.filter(jobPost => jobPost.title.toLowerCase().includes(event.target.value?.toLowerCase()));
+        const newJobPostDisplay = customFilterOnEvent(jobPosts, 'title', event)
         setJobPostDisplay(newJobPostDisplay);
     }
 

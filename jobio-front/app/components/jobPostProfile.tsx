@@ -11,20 +11,24 @@ const JobPost: React.FC<{ jobPostID: string }> = ({ jobPostID }) => {
 
     useEffect(() => {
         const reqPathJob = 'searchInfo/creatorName';
-        const queryStringJob = `orgID=${jobPostInfo[0]}`;
+        const queryStringJob = `orgID=${jobPostInfo[1]}`;
         jobPostInfo.length !== 0 && customGetter(reqPathJob, queryStringJob).then((data) => setCreator(data[0]));
 
         const reqPathCreator = 'profileData/jobPost';
         const queryStringCreator = `jobPostID=${jobPostID}`;
-        customGetter(reqPathCreator, queryStringCreator).then((data) => setJobPostInfo(Object.values(data[0])));
-    }, [])
+        jobPostInfo.length === 0 && customGetter(reqPathCreator, queryStringCreator).then((data) => setJobPostInfo(Object.values(data[0])));
+    }, [jobPostInfo])
+
 
     return (
         <div className='m-4'>
             {jobPostInfo.length !== 0 && fields.map((field, ind) => (
-                field === 'Created at' ?
+                field === 'Created at'
+                    ?
                     <p className='text-xl my-2' key={ind}><span className='font-bold'>{field} :</span> {format(new Date(jobPostInfo[ind + 1]), ' MMMM do, Y')}</p>
-                    : field === 'Created by' ?
+                    :
+                    field === 'Created by'
+                        ?
                         <p className='text-xl my-2' key={ind}><span className='font-bold'>{field} :</span> {creator.title}</p>
                         :
                         <p className='text-xl my-2' key={ind}><span className='font-bold'>{field} :</span> {jobPostInfo[ind + 1]}</p>
