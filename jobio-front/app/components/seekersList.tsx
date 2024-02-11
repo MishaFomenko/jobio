@@ -5,6 +5,8 @@ import { customGetter } from '../utils/fetch-requests';
 import { SeekersNames } from '../types';
 import Form from 'react-bootstrap/Form';
 import SearchDropdown from './searchDropdown';
+import { useUserContext } from '../context/userContext';
+import { UserContext } from '../types'
 
 const SeekersList: React.FC = () => {
 
@@ -13,12 +15,13 @@ const SeekersList: React.FC = () => {
     const [locationFilter, setLocationFilter] = useState<string>('');
     const [specFilter, setSpecFilter] = useState<string>('');
     const router = useRouter();
+    const { idToken } = useUserContext() as UserContext
 
 
     useEffect(() => {
         const reqPathInfo = 'searchInfo/Seekers';
         const queryStringInfo = '';
-        customGetter(reqPathInfo, queryStringInfo).then((data) => (setSeekersSearchInfo(data), setSeekerDisplay(data)));
+        customGetter(idToken, reqPathInfo, queryStringInfo).then((data) => (setSeekersSearchInfo(data), setSeekerDisplay(data)));
     }, [])
 
     useEffect(() => {

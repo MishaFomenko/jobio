@@ -6,6 +6,7 @@ export interface UserContext {
     auth: Auth;
     userRole: string | null;
     setUserRole: (role: string | null) => void;
+    idToken: string;
 }
 
 export interface OrgPageProps {

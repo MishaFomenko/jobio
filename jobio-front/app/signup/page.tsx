@@ -13,7 +13,7 @@ import Link from 'next/link';
 
 const SignUpPage: React.FC = () => {
 
-    const { setUser, auth, setUserRole } = useUserContext() as UserContext;
+    const { setUser, auth, setUserRole, idToken } = useUserContext() as UserContext;
     const router = useRouter();
 
     const handleSignUp = (event: React.ChangeEvent<any>) => {
@@ -41,7 +41,7 @@ const SignUpPage: React.FC = () => {
 
     const addUserToDb = (uid: string, role: string): void => {
         const reqPath = 'users/signUp';
-        customPoster(reqPath, { uid, role });
+        customPoster(idToken, reqPath, { uid, role });
     }
 
     return (

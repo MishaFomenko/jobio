@@ -2,6 +2,7 @@ const searchInfoRoutes = require('./routes/search-info');
 const profileDataRoutes = require('./routes/profile-data');
 const followersRoutes = require('./routes/followers');
 const usersRoutes = require('./routes/users');
+const checkAuth = require('./utils/checkAuth')
 
 const express = require('express');
 const cors = require('cors');
@@ -16,10 +17,10 @@ app.listen(PORT, () => {
     console.log(`the server is listening to the port ${PORT}`)
 })
 
-app.use('/searchInfo', searchInfoRoutes);
+app.use('/searchInfo', checkAuth, searchInfoRoutes);
 
-app.use('/users', usersRoutes);
+app.use('/users', checkAuth, usersRoutes);
 
-app.use('/profileData', profileDataRoutes);
+app.use('/profileData', checkAuth, profileDataRoutes);
 
-app.use('/followers', followersRoutes);
+app.use('/followers', checkAuth, followersRoutes);

@@ -3,21 +3,24 @@ import { useEffect, useState } from 'react';
 import { customGetter } from '../utils/fetch-requests';
 import { format } from 'date-fns';
 import { SeekersNames, SeekerInfo } from '../types';
+import { useUserContext } from '../context/userContext';
+import { UserContext } from '../types';
 
 const JobSeekerProfile: React.FC<{ seekerID: string }> = ({ seekerID }) => {
 
     const [seekerFollowing, setSeekerFollowing] = useState<SeekersNames[]>([]);
     const [seekerInfo, setSeekerInfo] = useState<SeekerInfo | {}>({});
     const fields = ['First name', 'Last name', 'Skills', 'Location', 'Email', 'University', 'Specialization', 'Degree', 'Experience (company)', 'Experience (years)', 'About', 'On the platform since'];
+    const { idToken } = useUserContext() as UserContext
 
     useEffect(() => {
         const reqPathInfo = 'profileData/seeker';
         const queryStringInfo = `seekerID=${seekerID}`;
-        customGetter(reqPathInfo, queryStringInfo).then((data) => setSeekerInfo(data[0]));
+        customGetter(idToken, reqPathInfo, queryStringInfo).then((data) => setSeekerInfo(data[0]));
 
         const reqPathFollowing = 'followers/seeker';
         const queryStringFollowing = `seekerID=${seekerID}`;
-        customGetter(reqPathFollowing, queryStringFollowing).then((data) => setSeekerFollowing(data));
+        customGetter(idToken, reqPathFollowing, queryStringFollowing).then((data) => setSeekerFollowing(data));
     }, [])
 
     return (

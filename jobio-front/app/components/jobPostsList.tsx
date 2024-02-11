@@ -4,17 +4,20 @@ import { useRouter } from 'next/navigation';
 import { customGetter, customFilterOnEvent } from '../utils/fetch-requests';
 import { JobPost } from '../types';
 import Form from 'react-bootstrap/Form';
+import { useUserContext } from '../context/userContext';
+import { UserContext } from '../types'
 
 const JobPostsList: React.FC = () => {
 
     const [jobPosts, setJobPosts] = useState<JobPost[]>([]);
     const [jobPostDisplay, setJobPostDisplay] = useState<JobPost[]>([]);
+    const { idToken } = useUserContext() as UserContext
     const router = useRouter();
 
     useEffect(() => {
         const reqPath = 'searchInfo/JobPosts';
         const queryString = '';
-        customGetter(reqPath, queryString).then((data) => (setJobPosts(data), setJobPostDisplay(data)));
+        customGetter(idToken, reqPath, queryString).then((data) => (setJobPosts(data), setJobPostDisplay(data)));
     }, [])
 
     const handleJobPostClick = (id: string): void => {

@@ -9,12 +9,12 @@ import { useRouter } from 'next/navigation';
 
 const UserAccountPage: React.FC = () => {
     const router = useRouter();
-    const { user, userRole, setUserRole } = useUserContext() as UserContext;
+    const { user, userRole, setUserRole, idToken } = useUserContext() as UserContext;
 
     useEffect(() => {
         const reqPath = 'profileData/userRole';
         const queryString = `userID=${user?.uid}`;
-        customGetter(reqPath, queryString).then((data) => setUserRole(data[0].role))
+        customGetter(idToken, reqPath, queryString).then((data) => setUserRole(data[0].role))
 
         user === null && router.push('/signin');
     })

@@ -6,6 +6,8 @@
 
 ARG NODE_VERSION=20.5.1
 
+ARG SERVICE_ACCOUNT_A
+
 FROM node:${NODE_VERSION}-alpine
 
 # Use production node environment by default.
@@ -28,6 +30,8 @@ USER node
 
 # Copy the rest of the source files into the image.
 COPY . .
+
+ENV SERVICE_ACCOUNT = $SERVICE_ACCOUNT_A
 
 # Expose the port that the application listens on.
 EXPOSE 3001

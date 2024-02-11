@@ -15,23 +15,23 @@ const JobSeekerAccount: React.FC = () => {
     const [seekerFollowing, setSeekerFollowing] = useState<OrgsSearchInfo[]>([]);
     const [editing, setEditing] = useState<boolean>(false);
     const fields = ['First name', 'Last name', 'Skills', 'Location', 'Email', 'University', 'Specialization', 'Degree', 'Experience (company)', 'Experience (years)', 'About'];
-    const { user } = useUserContext() as UserContext;
+    const { user, idToken } = useUserContext() as UserContext;
 
     const router = useRouter();
 
     useEffect(() => {
         const reqPathInfo = 'profileData/seeker';
         const queryStringInfo = `seekerID=${user?.uid}`;
-        customGetter(reqPathInfo, queryStringInfo).then((data) => setSeekerInfo(Object.values(data[0])));
+        customGetter(idToken, reqPathInfo, queryStringInfo).then((data) => setSeekerInfo(Object.values(data[0])));
 
         const reqPathFollowing = 'followers/seeker';
         const queryStringFollowing = `seekerID=${user?.uid}`;
-        customGetter(reqPathFollowing, queryStringFollowing).then((data) => setSeekerFollowing(data));
+        customGetter(idToken, reqPathFollowing, queryStringFollowing).then((data) => setSeekerFollowing(data));
     }, [])
 
     const handleEditing = (): void => {
         const reqPath = 'profileData/updateSeekerInfo';
-        editing && customPoster(reqPath, seekerInfo.slice(0, -1));
+        editing && customPoster(idToken, reqPath, seekerInfo.slice(0, -1));
         setEditing(!editing);
     }
 

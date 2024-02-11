@@ -1,10 +1,11 @@
 //18.218.30.148
-const customGetter = async (reqPath: string, queryString: string) => {
+const customGetter = async (idToken: string, reqPath: string, queryString: string) => {
     return fetch(`http://18.218.30.148:3001/${reqPath}?${queryString}`, {
         // return fetch(`http://localhost:3001/${reqPath}?${queryString}`, {
         method: 'GET',
         headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${idToken}`
         },
     })
         .then(async (jsonData) => {
@@ -13,13 +14,14 @@ const customGetter = async (reqPath: string, queryString: string) => {
         })
 }
 
-const customPoster = async (reqPath: string, body: object) => {
+const customPoster = async (idToken: string, reqPath: string, body: object) => {
     return fetch(`http://18.218.30.148:3001/${reqPath}`, {
         // return fetch(`http://localhost:3001/${reqPath}`, {
 
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${idToken}`
         },
         body: JSON.stringify(body),
     })

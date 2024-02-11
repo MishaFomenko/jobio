@@ -11,7 +11,7 @@ import { UserContext, JobPostForOrg, SeekersNames } from '../types';
 
 const OrgAccount: React.FC = () => {
 
-    const { user } = useUserContext() as UserContext;
+    const { user, idToken } = useUserContext() as UserContext;
 
     const [orgInfo, setOrgInfo] = useState<(string | number)[]>([]);
     const [orgFollowers, setOrgFollowers] = useState<SeekersNames[]>([]);
@@ -28,26 +28,26 @@ const OrgAccount: React.FC = () => {
     useEffect(() => {
         const reqPathInfo = 'profileData/org';
         const queryStringInfo = `orgID=${user?.uid}`;
-        customGetter(reqPathInfo, queryStringInfo).then((data) => setOrgInfo(Object.values(data[0])));
+        customGetter(idToken, reqPathInfo, queryStringInfo).then((data) => setOrgInfo(Object.values(data[0])));
 
         const reqPathFollowers = 'followers/org';
         const queryStringFollowers = `orgID=${user?.uid}`;
-        customGetter(reqPathFollowers, queryStringFollowers).then((data) => setOrgFollowers(data));
+        customGetter(idToken, reqPathFollowers, queryStringFollowers).then((data) => setOrgFollowers(data));
 
         const reqPathForOrg = 'searchInfo/JobPostsForOrg';
         const queryStringForOrg = `orgID=${user?.uid}`;
-        customGetter(reqPathForOrg, queryStringForOrg).then((data) => setJobPostsForOrg(data));
+        customGetter(idToken, reqPathForOrg, queryStringForOrg).then((data) => setJobPostsForOrg(data));
     }, [])
 
     const handleEditing = (): void => {
         const reqPathEditing = 'profileData/updateOrgInfo';
-        editing && customPoster(reqPathEditing, orgInfo.slice(0, -1));
+        editing && customPoster(idToken, reqPathEditing, orgInfo.slice(0, -1));
         setEditing(!editing);
     }
 
     const handleCreatingJobPost = (): void => {
         const reqPathCreating = 'profileData/createNewJobPost';
-        creatingJobPost && customPoster(reqPathCreating, newJobPost);
+        creatingJobPost && customPoster(idToken, reqPathCreating, newJobPost);
         setCreatingJobPost(!creatingJobPost);
     }
 

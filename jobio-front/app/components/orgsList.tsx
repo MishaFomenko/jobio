@@ -2,9 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { customGetter } from '../utils/fetch-requests';
-import { OrgsSearchInfo } from '../types';
+import { OrgsSearchInfo, UserContext } from '../types';
 import Form from 'react-bootstrap/Form';
 import SearchDropdown from './searchDropdown';
+import { useUserContext } from '../context/userContext'
 
 const OrgsList: React.FC = () => {
 
@@ -12,13 +13,13 @@ const OrgsList: React.FC = () => {
     const [orgDisplay, setOrgDisplay] = useState<OrgsSearchInfo[]>([]);
     const [locationFilter, setLocationFilter] = useState<string>('');
     const [industryFilter, setIndustryFilter] = useState<string>('');
-
+    const { idToken } = useUserContext() as UserContext
     const router = useRouter();
 
     useEffect(() => {
         const reqPath = 'searchInfo/Orgs';
         const queryString = '';
-        customGetter(reqPath, queryString).then((data) => (setOrgs(data), setOrgDisplay(data)));
+        customGetter(idToken, reqPath, queryString).then((data) => (setOrgs(data), setOrgDisplay(data)));
     }, [])
 
     useEffect(() => {

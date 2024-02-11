@@ -15,24 +15,24 @@ const OrganizationProfile: React.FC<{ orgID: string }> = ({ orgID }) => {
     const [following, setFollowing] = useState<boolean>(false);
     const fields = ['Title', 'Industry', 'Website', 'Email', 'Staff', 'About', 'Location', 'On the platform since'];
     const router = useRouter();
-    const { user, userRole } = useUserContext() as UserContext;
+    const { user, userRole, idToken } = useUserContext() as UserContext;
 
     useEffect(() => {
         const reqPathInfo = 'profileData/org';
         const queryStringInfo = `orgID=${orgID}`;
-        customGetter(reqPathInfo, queryStringInfo).then((data) => setOrgInfo(data[0]));
+        customGetter(idToken, reqPathInfo, queryStringInfo).then((data) => setOrgInfo(data[0]));
 
         const reqPathFollowers = 'followers/org';
         const queryStringFollowers = `orgID=${orgID}`;
-        customGetter(reqPathFollowers, queryStringFollowers).then((data) => setOrgFollowers(data));
+        customGetter(idToken, reqPathFollowers, queryStringFollowers).then((data) => setOrgFollowers(data));
 
         const reqPathForOrg = 'searchInfo/JobPostsForOrg';
         const queryStringForOrg = `orgID=${orgID}`;
-        customGetter(reqPathForOrg, queryStringForOrg).then((data) => setJobPostsForOrg(data));
+        customGetter(idToken, reqPathForOrg, queryStringForOrg).then((data) => setJobPostsForOrg(data));
 
         const reqPathCheck = 'followers/check';
         const queryStringCheck = `orgID=${orgID}&userID=${user?.uid}`;
-        customGetter(reqPathCheck, queryStringCheck).then((data) => data.length !== 0 && setFollowing(true));
+        customGetter(idToken, reqPathCheck, queryStringCheck).then((data) => data.length !== 0 && setFollowing(true));
     })
 
     const handleJobPostClick = (event: React.ChangeEvent<any>): void => {
@@ -41,7 +41,7 @@ const OrganizationProfile: React.FC<{ orgID: string }> = ({ orgID }) => {
 
     const handleNewSub = (): void => {
         const reqPath = 'followers/addNew';
-        !following && customPoster(reqPath, {
+        !following && customPoster(idToken, reqPath, {
             follower: user?.uid,
             following: orgID,
         })
