@@ -23,7 +23,7 @@ jobs:
       - name: Build the Docker images
         run: |
           docker build -t mishafomenko/jobio:frontend-1.0 ./jobio-front
-          docker build --build-arg SERVICE_ACCOUNT_A="${{ secrets.SERVICE_ACCOUNT }}" -t mishafomenko/jobio:backend-1.0 ./jobio-back
+          docker build --build-arg SERVICE_ACCOUNT_A="${{ secrets.DOCKERHUB_ACCESS_TOKEN }}" -t mishafomenko/jobio:backend-1.0 ./jobio-back
       - name: Log in to Docker Hub
         run: docker login -u mishafomenko -p ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
       - name: Push Docker images to Docker Hub
