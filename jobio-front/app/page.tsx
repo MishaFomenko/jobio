@@ -9,12 +9,11 @@ import { useRouter } from 'next/navigation';
 import { useUserContext } from './context/userContext';
 import { UserContext } from './types';
 
-
 const HomePage: React.FC = () => {
   const { user } = useUserContext() as UserContext;
   const router = useRouter();
   useEffect(() => {
-    user === null && router.push('/signin');
+    !user && router.push('/signin');
   })
   return (
     <Tabs

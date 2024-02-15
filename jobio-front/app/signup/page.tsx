@@ -7,14 +7,21 @@ import { createUserWithEmailAndPassword, setPersistence, browserSessionPersisten
 import { useUserContext } from '../context/userContext';
 import { customPoster } from '../utils/fetch-requests';
 import { UserContext } from '../types';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 const SignUpPage: React.FC = () => {
 
-    const { setUser, auth, setUserRole, idToken } = useUserContext() as UserContext;
+    const [signUpError, setSignUpError] = useState<string | null>(null)
+    const [error, setError] = useState<Error | null>(null);
+
+    const { user, setUser, auth, setUserRole, idToken } = useUserContext() as UserContext;
     const router = useRouter();
+
+    useEffect(() => {
+        user && router.push('/user-account');
+    })
 
     const handleSignUp = (event: React.ChangeEvent<any>) => {
         event.preventDefault();
@@ -33,15 +40,28 @@ const SignUpPage: React.FC = () => {
                 setUserRole(role === 'Organization' ? 'org' : 'seeker')
                 router.push('/user-account');
             })
-            .catch((error: Error) => {
-                const errorMessage = error.message;
-                console.log('The sign-up failed with an error: ', errorMessage)
+            .catch((error) => {
+                if (error.code = "auth/weak-password") {
+                    const errorMessage = 'Password should be at least 6 characters long.'
+                    setSignUpError(errorMessage)
+                } else {
+                    const errorMessage = 'Something went wrong, please try again later.'
+                    setSignUpError(errorMessage)
+                }
             });
     }
 
     const addUserToDb = (uid: string, role: string): void => {
         const reqPath = 'users/signUp';
-        customPoster(idToken, reqPath, { uid, role });
+        try {
+            idToken && customPoster(idToken, reqPath, { uid, role });
+        } catch (postingError: any) {
+            setError(postingError)
+        }
+    }
+
+    if (error) {
+        return <p>Error occured</p>
     }
 
     return (
@@ -76,6 +96,7 @@ const SignUpPage: React.FC = () => {
                         <Form.Control type="password" placeholder="Password" />
                     </Col>
                 </Form.Group>
+                {signUpError && <p className='text-red-600'>{signUpError}</p>}
                 <Button variant="info" type="submit" >
                     Submit
                 </Button>

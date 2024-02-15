@@ -8,11 +8,16 @@ import { useUserContext } from '../context/userContext';
 import { useRouter } from 'next/navigation';
 import { UserContext } from '../types';
 import Link from 'next/link';
+import { useState, useEffect } from 'react'
 
 const SignInPage: React.FC = () => {
 
-    const { setUser, auth } = useUserContext() as UserContext;
+    const [signInError, setSigninError] = useState<string | null>(null)
+    const { setUser, auth, user } = useUserContext() as UserContext;
     const router = useRouter();
+    useEffect(() => {
+        user && router.push('/user-account');
+    })
 
     const handleSignIn = (event: React.ChangeEvent<any>) => {
         event.preventDefault();
@@ -28,9 +33,14 @@ const SignInPage: React.FC = () => {
                 setUser(newUser);
                 router.push('/user-account');
             })
-            .catch((error: Error) => {
-                const errorMessage = error.message;
-                console.log('Sign-in failed with an error: ', errorMessage)
+            .catch((error) => {
+                if (error.code === "auth/invalid-login-credentials") {
+                    const errorMessage = 'Invalid email or password.'
+                    setSigninError(errorMessage)
+                } else {
+                    const errorMessage = 'Something went wrong, please try again later.'
+                    setSigninError(errorMessage)
+                }
             });
     }
 
@@ -55,6 +65,7 @@ const SignInPage: React.FC = () => {
                         <Form.Control type="password" placeholder="Password" />
                     </Col>
                 </Form.Group>
+                {signInError && <p className='text-red-600'>{signInError}</p>}
                 <Button variant="info" type="submit">
                     Submit
                 </Button>

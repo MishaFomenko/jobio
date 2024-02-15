@@ -1,7 +1,7 @@
 import { Auth, User } from 'firebase/auth';
 
 export interface UserContext {
-    user: User | null;
+    user: any | null;
     setUser: (user: User | null) => void;
     auth: Auth;
     userRole: string | null;

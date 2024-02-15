@@ -3,6 +3,7 @@ const followersRoutes = express.Router();
 const { custom_queries } = require('../utils/queries');
 const { pool } = require('../db/db');
 const { formatDate } = require('../utils/functions');
+const dbFailureException = require('../utils/dbFailureException')
 
 followersRoutes.get('/org', async (req, res) => {
     const { orgID } = req.query;
@@ -18,8 +19,8 @@ followersRoutes.get('/seeker', async (req, res) => {
 
 followersRoutes.get('/check', async (req, res) => {
     const { orgID, userID } = req.query;
-    const userRole = await pool.query(custom_queries.checkIfFollowing, [userID, orgID]);
-    res.status(200).json(userRole);
+    const userRole = await pool.query(custom_queries.checkIfFollowing, [userID, orgID], (err, dbRes) => dbFailureException(err, dbRes, res));
+    // res.status(200).json(userRole);
 })
 
 followersRoutes.post('/addNew', (req, res) => {

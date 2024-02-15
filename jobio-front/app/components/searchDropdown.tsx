@@ -67,7 +67,7 @@ const SearchDropdown: React.FC<CustomDropdownProps> = ({ searchBy, data, filterS
             </Dropdown.Toggle>
 
             <Dropdown.Menu as={CustomMenu}>
-                {data.map((item, ind) => (
+                {data && data.map((item, ind) => (
                     <Dropdown.Item onClick={(e) => handleItemClick(e)} eventKey={ind} key={ind}>{item}</Dropdown.Item>
                 ))}
             </Dropdown.Menu>

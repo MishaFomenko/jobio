@@ -9,7 +9,7 @@ const JobSeekerPage: React.FC<SeekerPageProps> = ({ params }) => {
     const { user } = useUserContext() as UserContext;
     const router = useRouter();
     useEffect(() => {
-        user === null && router.push('/signin');
+        !user && router.push('/signin');
     })
     return (
         <>

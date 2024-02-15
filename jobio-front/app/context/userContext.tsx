@@ -3,6 +3,7 @@ import * as FirebaseAuth from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { createContext, useContext, useState } from 'react';
 import { UserContext } from '../types';
+import { User } from 'firebase/auth';
 
 const firebaseConfig = {
     apiKey: "AIzaSyCmM9nSO3MDnqW8-H7ZLObUb9pJk4sbJ2c",
@@ -21,15 +22,14 @@ const auth = FirebaseAuth.getAuth(app);
 const UserContext = createContext<UserContext | {}>({});
 
 export const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
-    let prevUser: string | null = null;
+    let prevUser: User | null = null;
     let prevIdToken: string | null = null;
     try {
         const storedUser = sessionStorage.getItem(`firebase:authUser:AIzaSyCmM9nSO3MDnqW8-H7ZLObUb9pJk4sbJ2c:[DEFAULT]`);
         if (typeof storedUser === 'string') {
             prevUser = JSON.parse(storedUser);
         }
-
-        const storedIdToken = sessionStorage.getItem(`idToken`);
+        const storedIdToken = sessionStorage.getItem('idToken');
         if (typeof storedIdToken === 'string') {
             prevIdToken = storedIdToken;
         }
@@ -38,25 +38,27 @@ export const UserContextProvider = ({ children }: { children: React.ReactNode })
         console.log('Unable to log sessionStorage on the server');
     };
 
-    const [user, setUser] = useState<string | null>(prevUser);
+    const [user, setUser] = useState<any>(prevUser);
     const [userRole, setUserRole] = useState<'org' | 'seeker' | null>(null);
     const [idToken, setIdToken] = useState<string | null>(prevIdToken);
 
-    FirebaseAuth.onAuthStateChanged(auth, (user: any) => {
-        if (user) {
-            // User is signed in, get the ID token
-            FirebaseAuth.getIdToken(user, /* forceRefresh */ true).then(function (idToken: string) {
-                setIdToken(idToken)
-                sessionStorage.setItem('idToken', idToken);
+    if (user && (!idToken || new Date(user.stsTokenManager.expirationTime) < new Date())) {
+        FirebaseAuth.onAuthStateChanged(auth, (user: any) => {
 
-            }).catch(function (error: string) {
-                // Handle error
-            });
-        } else {
-            // User is signed out
-        }
-    });
-    console.log(idToken)
+            // if (user && new Date(user.stsTokenManager.expirationTime) < new Date()) {
+            if (user) {
+                FirebaseAuth.getIdToken(user, true).then(function (idToken: string) {
+                    // idToken = newIdToken
+                    sessionStorage.setItem('idToken', idToken)
+                    setIdToken(idToken)
+                }).catch(function (error: string) {
+
+                });
+            } else {
+            }
+        });
+    }
+
     return (
         <UserContext.Provider value={{ user, setUser, auth, userRole, setUserRole, idToken }}>
             {children}

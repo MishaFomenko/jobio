@@ -1,6 +1,7 @@
 //18.218.30.148
 const customGetter = async (idToken: string, reqPath: string, queryString: string) => {
     return fetch(`http://18.218.30.148:3001/${reqPath}?${queryString}`, {
+        // console.log('fetching for path: ', reqPath)
         // return fetch(`http://localhost:3001/${reqPath}?${queryString}`, {
         method: 'GET',
         headers: {
@@ -9,8 +10,15 @@ const customGetter = async (idToken: string, reqPath: string, queryString: strin
         },
     })
         .then(async (jsonData) => {
-            const data = await jsonData.json();
-            return data.rows
+            if (!jsonData.ok) {
+                // If the server responds with a bad HTTP status code, throw an error
+                const data = await jsonData.json();
+                throw new Error(data.message);
+            } else {
+                const data = await jsonData.json();
+                return data.rows
+
+            }
         })
 }
 
