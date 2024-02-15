@@ -6,7 +6,6 @@
 
 ARG NODE_VERSION=20.5.1
 
-ARG SERVICE_ACCOUNT_A
 
 FROM node:${NODE_VERSION}-alpine
 
@@ -30,6 +29,7 @@ USER node
 
 # Copy the rest of the source files into the image.
 COPY . .
+ARG SERVICE_ACCOUNT_A
 
 ENV SERVICE_ACCOUNT = $SERVICE_ACCOUNT_A
 
