@@ -30,8 +30,10 @@ USER node
 # Copy the rest of the source files into the image.
 COPY . .
 ARG SERVICE_ACCOUNT_A
+ARG DB_URI_A
 
 ENV SERVICE_ACCOUNT=$SERVICE_ACCOUNT_A
+ENV DB_URI=$DB_URI_A
 
 # Expose the port that the application listens on.
 EXPOSE 3001
