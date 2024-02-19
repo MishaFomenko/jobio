@@ -1,8 +1,7 @@
 //18.218.30.148
-const customGetter = async (idToken: string, reqPath: string, queryString: string) => {
-    // return fetch(`http://18.218.30.148:3001/${reqPath}?${queryString}`, {
-    // console.log('GET fetching for path: ', reqPath)
-    return fetch(`http://localhost:3001/${reqPath}?${queryString}`, {
+const customGetter = async (idToken: string, reqPath: string, queryString: string): Promise<any> => {
+    return fetch(`http://18.218.30.148:3001/${reqPath}?${queryString}`, {
+        // return fetch(`http://localhost:3001/${reqPath}?${queryString}`, {
         method: 'GET',
         headers: {
             "Content-Type": "application/json",
@@ -11,7 +10,6 @@ const customGetter = async (idToken: string, reqPath: string, queryString: strin
     })
         .then(async (jsonData) => {
             if (!jsonData.ok) {
-                // If the server responds with a bad HTTP status code, throw an error
                 const data = await jsonData.json();
                 throw new Error(data.message);
             } else {
@@ -25,10 +23,9 @@ const customGetter = async (idToken: string, reqPath: string, queryString: strin
         })
 }
 
-const customPoster = async (idToken: string, reqPath: string, body: object) => {
-    // return fetch(`http://18.218.30.148:3001/${reqPath}`, {
-    // console.log('POST fetching for path: ', reqPath)
-    return fetch(`http://localhost:3001/${reqPath}`, {
+const customPoster = async (idToken: string, reqPath: string, body: object): Promise<any> => {
+    return fetch(`http://18.218.30.148:3001/${reqPath}`, {
+        // return fetch(`http://localhost:3001/${reqPath}`, {
 
         method: 'POST',
         headers: {
@@ -39,7 +36,6 @@ const customPoster = async (idToken: string, reqPath: string, body: object) => {
     })
         .then(async (jsonData) => {
             if (!jsonData.ok) {
-                // If the server responds with a bad HTTP status code, throw an error
                 const data = await jsonData.json();
                 throw new Error(data.message);
             } else {
@@ -52,10 +48,9 @@ const customPoster = async (idToken: string, reqPath: string, body: object) => {
         })
 }
 
-const customDeleter = async (idToken: string, reqPath: string, queryString: string) => {
-    // eturn fetch(`http://18.218.30.148:3001/${reqPath}?${queryString}`, {
-    // console.log('DELETE fetching for path: ', reqPath)
-    return fetch(`http://localhost:3001/${reqPath}?${queryString}`, {
+const customDeleter = async (idToken: string, reqPath: string, queryString: string): Promise<any> => {
+    return fetch(`http://18.218.30.148:3001/${reqPath}?${queryString}`, {
+        // return fetch(`http://localhost:3001/${reqPath}?${queryString}`, {
         method: 'DELETE',
         headers: {
             "Content-Type": "application/json",
@@ -64,7 +59,6 @@ const customDeleter = async (idToken: string, reqPath: string, queryString: stri
     })
         .then(async (jsonData) => {
             if (!jsonData.ok) {
-                // If the server responds with a bad HTTP status code, throw an error
                 const data = await jsonData.json();
                 throw new Error(data.message);
             } else {
@@ -77,7 +71,7 @@ const customDeleter = async (idToken: string, reqPath: string, queryString: stri
         })
 }
 
-const customFilterOnEvent = (toFilter: any, filterBy: any, event: any) => {
+const customFilterOnEvent = (toFilter: any, filterBy: any, event: any): Array<any> => {
     return toFilter.filter((element: any) => element[filterBy].toLowerCase().includes(event.target.value?.toLowerCase()))
 }
 

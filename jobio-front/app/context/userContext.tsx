@@ -2,8 +2,7 @@
 import * as FirebaseAuth from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { createContext, useContext, useState } from 'react';
-import { UserContext } from '../types';
-import { User } from 'firebase/auth';
+import { UserContext, CustomUser } from '../types';
 
 const firebaseConfig = {
     apiKey: "AIzaSyCmM9nSO3MDnqW8-H7ZLObUb9pJk4sbJ2c",
@@ -21,8 +20,8 @@ const auth = FirebaseAuth.getAuth(app);
 
 const UserContext = createContext<UserContext | {}>({});
 
-export const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
-    let prevUser: User | null = null;
+export const UserContextProvider = ({ children }: { children: React.ReactNode }): JSX.Element => {
+    let prevUser: CustomUser | null = null;
     let prevIdToken: string | null = null;
     try {
         const storedUser = sessionStorage.getItem(`firebase:authUser:AIzaSyCmM9nSO3MDnqW8-H7ZLObUb9pJk4sbJ2c:[DEFAULT]`);
@@ -38,14 +37,14 @@ export const UserContextProvider = ({ children }: { children: React.ReactNode })
         console.log('Unable to log sessionStorage on the server');
     };
 
-    const [user, setUser] = useState<any>(prevUser);
+    const [user, setUser] = useState<CustomUser | null>(prevUser);
     const [userRole, setUserRole] = useState<'org' | 'seeker' | null>(null);
     const [idToken, setIdToken] = useState<string | null>(prevIdToken);
 
     const newTokenRetrievalCondition = user && (!idToken || new Date(user.stsTokenManager.expirationTime) < new Date() || user.stsTokenManager.accessToken !== prevIdToken)
 
     if (newTokenRetrievalCondition) {
-        FirebaseAuth.onAuthStateChanged(auth, (user: any) => {
+        FirebaseAuth.onAuthStateChanged(auth, (user) => {
             if (user) {
                 FirebaseAuth.getIdToken(user, true).then(function (idToken: string) {
                     sessionStorage.setItem('idToken', idToken)

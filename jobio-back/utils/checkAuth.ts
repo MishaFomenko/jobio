@@ -1,11 +1,17 @@
-const admin = require('firebase-admin');
+import admin from 'firebase-admin'
+import { Request, Response, NextFunction } from 'express';
+
 require('dotenv').config()
 
-admin.initializeApp({
+process.env.SERVICE_ACCOUNT && admin.initializeApp({
     credential: admin.credential.cert(JSON.parse(process.env.SERVICE_ACCOUNT)),
 });
 
-const checkAuth = (req, res, next) => {
+interface CustomRequest extends Request {
+    user?: admin.auth.DecodedIdToken;
+}
+
+const checkAuth = (req: CustomRequest, res: Response, next: NextFunction) => {
     const authorizationHeader = req.headers.authorization;
 
     if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
@@ -16,7 +22,7 @@ const checkAuth = (req, res, next) => {
 
     admin.auth().verifyIdToken(idToken)
         .then(decodedToken => {
-            req.user = decodedToken; // Optional: Add decoded token to request object
+            req.user = decodedToken;
             next();
         })
         .catch(error => {
@@ -25,4 +31,4 @@ const checkAuth = (req, res, next) => {
         });
 };
 
-module.exports = checkAuth;
+export default checkAuth

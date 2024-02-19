@@ -1,5 +1,7 @@
+import { Response } from 'express'
+import { QueryResult } from 'pg'
 
-function dbFailureException(err, dbRes, res) {
+function dbFailureException(err: Error, dbRes: QueryResult, res: Response): Response {
     if (err) {
         console.error('Error executing query');
         return res.status(500).json({ message: 'Database connection failed' });
@@ -7,4 +9,4 @@ function dbFailureException(err, dbRes, res) {
     return res.status(200).json(dbRes);
 }
 
-module.exports = dbFailureException
+export default dbFailureException

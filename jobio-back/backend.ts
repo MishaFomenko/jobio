@@ -1,12 +1,12 @@
 const searchInfoRoutes = require('./routes/search-info');
 const profileDataRoutes = require('./routes/profile-data');
 const followersRoutes = require('./routes/followers');
-const usersRoutes = require('./routes/users');
-const checkAuth = require('./utils/checkAuth')
-const { pool } = require('./db/db');
+import usersRoutes from './routes/users'
+import checkAuth from './utils/checkAuth'
+import pool from './db/db'
 
-const express = require('express');
-const cors = require('cors');
+import express from 'express'
+import cors from 'cors'
 
 const app = express();
 const PORT = 3001;

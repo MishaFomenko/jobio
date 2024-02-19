@@ -37,10 +37,10 @@ const UserAccountPage: React.FC = () => {
         setPending(userRoleQuery.isPending)
     }, [userRoleQuery.isPending, user])
 
-    const handleDeleteAccount = async (event: any) => {
+    const handleDeleteAccount = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        const email = event.target.elements.email.value
-        if (user.email === email) {
+        const email = event.currentTarget.elements.namedItem('email');
+        if (user && user.email === email) {
             deleteUser(user).then(() => {
                 const reqPath = 'profileData/deleteAccount'
                 const queryString = `userID=${user?.uid}`

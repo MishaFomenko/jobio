@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react';
+import { useEffect, useState, ChangeEvent } from 'react';
 import { useUserContext } from '../context/userContext';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -68,8 +68,8 @@ const OrgAccount: React.FC = () => {
         const reqPathEditing = 'profileData/updateOrgInfo';
         try {
             editing && idToken && customPoster(idToken, reqPathEditing, orgInfo.slice(0, -1))
-        } catch (postingError: any) {
-            setError(postingError)
+        } catch (postingError) {
+            setError(postingError as Error)
         }
         setEditing(!editing);
     }
@@ -78,8 +78,8 @@ const OrgAccount: React.FC = () => {
         const reqPathCreating = 'profileData/createNewJobPost';
         try {
             await creatingJobPost && idToken && customPoster(idToken, reqPathCreating, newJobPost)
-        } catch (postingError: any) {
-            setError(postingError)
+        } catch (postingError) {
+            setError(postingError as Error)
         }
         setCreatingJobPost(!creatingJobPost);
         const updatedJobPostsForOrg = await customGetter(idToken, reqPathForOrg, queryStringForOrg)
@@ -96,14 +96,14 @@ const OrgAccount: React.FC = () => {
         setOrgInfo(newInfoArray);
     }
 
-    const handleJobPostInputChange = (ind: number, event: React.ChangeEvent<any>): void => {
+    const handleJobPostInputChange = (ind: number, event: ChangeEvent<any>): void => {
         const newInfoArray = newJobPost;
         newInfoArray[ind + 1] = event.target.value;
         setNewJobPost(newInfoArray);
     }
 
-    const handleJobPostClick = (event: React.ChangeEvent<any>) => {
-        router.push(`/job-post-page/${event.target.id}`);
+    const handleJobPostClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        router.push(`/job-post-page/${event.currentTarget.id}`);
     }
 
     if (pending) {

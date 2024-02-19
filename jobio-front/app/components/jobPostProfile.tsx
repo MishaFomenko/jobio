@@ -46,14 +46,14 @@ const JobPost: React.FC<{ jobPostID: string }> = ({ jobPostID }) => {
         setError(creatorQuery.error || jobPostInfoQuery.error)
     }, [creatorQuery.isPending, jobPostInfoQuery.isPending])
 
-    const handleDeleteJobPost = async () => {
+    const handleDeleteJobPost = async (): Promise<void> => {
         const reqPath = 'profileData/deleteJobPost'
         const queryString = `orgID=${jobPostInfo[1]}&jobPostID=${jobPostID}`
         try {
             idToken && await customDeleter(idToken, reqPath, queryString)
             router.push('/user-account')
-        } catch (deletingError: any) {
-            setError(deletingError)
+        } catch (deletingError) {
+            setError(deletingError as Error)
         }
     }
 

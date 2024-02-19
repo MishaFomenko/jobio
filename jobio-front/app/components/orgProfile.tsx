@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react';
+import { useEffect, useState, ChangeEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUserContext } from '../context/userContext';
 import { customGetter, customPoster, customDeleter } from '../utils/fetch-requests';
@@ -68,7 +68,7 @@ const OrganizationProfile: React.FC<{ orgID: string }> = ({ orgID }) => {
 
     }, [orgDataQuery.isPending, orgFollowersQuery.isPending, jobPostsForOrgQuery.isPending, followerCheckQuery.isPending])
 
-    const handleJobPostClick = (event: React.ChangeEvent<any>): void => {
+    const handleJobPostClick = (event: ChangeEvent<any>): void => {
         router.push(`/job-post-page/${event.target.id}`);
     }
 
@@ -80,8 +80,8 @@ const OrganizationProfile: React.FC<{ orgID: string }> = ({ orgID }) => {
                 following: orgID,
             })
             setFollowing(true)
-        } catch (postingError: any) {
-            setError(postingError)
+        } catch (postingError) {
+            setError(postingError as Error)
         }
     }
 
@@ -91,8 +91,8 @@ const OrganizationProfile: React.FC<{ orgID: string }> = ({ orgID }) => {
         try {
             following && idToken && await customDeleter(idToken, reqPath, queryString)
             setFollowing(false)
-        } catch (unsubscribingError: any) {
-            setError(unsubscribingError)
+        } catch (unsubscribingError) {
+            setError(unsubscribingError as Error)
         }
     }
 

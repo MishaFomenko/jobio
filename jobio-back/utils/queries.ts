@@ -24,6 +24,4 @@ const custom_queries = {
     deleteUser: 'DELETE FROM unique_user_id WHERE id=$1',
 }
 
-module.exports = {
-    custom_queries,
-}
+export default custom_queries

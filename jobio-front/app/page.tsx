@@ -16,22 +16,6 @@ const HomePage: React.FC = () => {
     !user && router.push('/signin');
   })
   return (
-    // <Tabs
-    //   defaultActiveKey="orgs"
-    //   id="justify-tab-example"
-    //   className="mb-3"
-    //   justify
-    // >
-    //   <Tab eventKey="orgs" title="Organizations">
-    //     <OrgsList />
-    //   </Tab>
-    //   <Tab eventKey="seekers" title="Looking for a job">
-    //     <SeekersList />
-    //   </Tab>
-    //   <Tab eventKey="posts" title="Job posts">
-    //     <JobPostsList />
-    //   </Tab>
-    // </Tabs>
     <Tabs
       defaultActiveKey="orgs"
       id="justify-tab-example"

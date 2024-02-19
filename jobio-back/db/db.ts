@@ -1,6 +1,5 @@
 
-
-const { Client } = require('pg');
+import { Client } from 'pg'
 
 const pool = new Client({
     connectionString: process.env.DB_URI,
@@ -11,7 +10,7 @@ const pool = new Client({
     keepAlive: true,
 });
 
-pool.connect(err => {
+pool.connect((err: Error) => {
     if (err) {
         console.error('Database connection error', err.message);
     } else {
@@ -19,6 +18,4 @@ pool.connect(err => {
     }
 });
 
-module.exports = {
-    pool,
-}
+export default pool

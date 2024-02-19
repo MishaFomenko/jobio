@@ -1,7 +1,14 @@
 import { Auth, User } from 'firebase/auth';
 
+export interface CustomUser extends User {
+    stsTokenManager: {
+        expirationTime: string;
+        accessToken: string;
+    }
+}
+
 export interface UserContext {
-    user: any | null;
+    user: CustomUser | null;
     setUser: (user: User | null) => void;
     auth: Auth;
     userRole: string | null;

@@ -1,9 +1,10 @@
-const express = require('express');
+import express from 'express'
+import custom_queries from '../utils/queries'
+import pool from '../db/db'
+import formatDate from '../utils/functions'
+import dbFailureException from '../utils/dbFailureException'
+
 const profileDataRoutes = express.Router();
-const { custom_queries } = require('../utils/queries');
-const { pool } = require('../db/db');
-const { formatDate } = require('../utils/functions');
-const dbFailureException = require('../utils/dbFailureException')
 
 profileDataRoutes.get('/org', async (req, res) => {
     const { orgID } = req.query;
@@ -52,4 +53,4 @@ profileDataRoutes.delete('/deleteAccount', (req, res) => {
     pool.query(custom_queries.deleteUser, [userID], (err, dbRes) => dbFailureException(err, dbRes, res))
 })
 
-module.exports = profileDataRoutes;
+export default profileDataRoutes;

@@ -1,9 +1,10 @@
-const express = require('express');
+import express from 'express'
+import custom_queries from '../utils/queries'
+import pool from '../db/db'
+import formatDate from '../utils/functions'
+import dbFailureException from '../utils/dbFailureException'
+
 const followersRoutes = express.Router();
-const { custom_queries } = require('../utils/queries');
-const { pool } = require('../db/db');
-const { formatDate } = require('../utils/functions');
-const dbFailureException = require('../utils/dbFailureException')
 
 followersRoutes.get('/org', async (req, res) => {
     const { orgID } = req.query;
@@ -32,4 +33,4 @@ followersRoutes.delete('/unsubscribe', async (req, res) => {
     pool.query(custom_queries.unsubscribe, [following, follower], (err, dbRes) => dbFailureException(err, dbRes, res))
 })
 
-module.exports = followersRoutes;
+export default followersRoutes

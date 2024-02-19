@@ -1,8 +1,10 @@
-const express = require('express');
+import express from 'express'
+import custom_queries from '../utils/queries'
+import pool from '../db/db'
+import formatDate from '../utils/functions'
+import dbFailureException from '../utils/dbFailureException'
+
 const usersRoutes = express.Router();
-const { custom_queries } = require('../utils/queries');
-const { pool } = require('../db/db');
-const { formatDate } = require('../utils/functions');
 
 usersRoutes.post('/signUp', (req, res) => {
     const { role, uid } = req.body;
@@ -20,4 +22,4 @@ usersRoutes.post('/signUp', (req, res) => {
 })
 
 
-module.exports = usersRoutes;
+export default usersRoutes;
